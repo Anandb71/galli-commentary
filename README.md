@@ -8,6 +8,10 @@ Built for the Sarvam **"Build something that speaks"** challenge, on **Bulbul v4
 
 ![Demo: a scripted last over called live](docs/demo.gif)
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FAnandb71%2Fgalli-commentary&env=SARVAM_API_KEY&envDescription=Sarvam%20API%20subscription%20key)
+
+▶ [Watch the demo with audio](docs/demo.mp4)
+
 ## Features
 
 - **One-tap ball events**: dot, 1, 2, FOUR, SIX, wicket (bowled / caught / LBW), wide, no-ball, dropped catch. Keyboard shortcuts: `0 1 2 4 6 w c l x n d`.
