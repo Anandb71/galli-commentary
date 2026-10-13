@@ -1,0 +1,15 @@
+{
+  "name": "galli-commentary",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Live Indian-language cricket commentary: tap a ball, hear it called in Hindi, Tamil, Telugu, Bengali or English with Sarvam Bulbul v4.",
+  "license": "MIT",
+  "scripts": {
+    "dev": "node dev-server.js",
+    "start": "node dev-server.js",
+    "test": "node test/smoke.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

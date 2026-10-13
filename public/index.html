@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Galli Commentary · Live cricket calls in your language</title>
+  <meta name="description" content="Tap a ball, hear it called live in Hindi, Tamil, Telugu, Bengali or English. Powered by Sarvam Bulbul v4." />
+  <meta name="theme-color" content="#060b1a" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;800&family=Noto+Sans+Bengali:wght@600;800&family=Noto+Sans+Devanagari:wght@600;800&family=Noto+Sans+Tamil:wght@600;800&family=Noto+Sans+Telugu:wght@600;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="sky" aria-hidden="true">
+    <span class="flood flood-l"></span><span class="flood flood-r"></span>
+    <div class="field"></div>
+  </div>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="ball-logo" aria-hidden="true"></span>
+      <div>
+        <h1>Galli <em>Commentary</em></h1>
+        <p class="tag">Every gully deserves a commentator.</p>
+      </div>
+    </div>
+    <div class="controls">
+      <label class="ctl">
+        <span>Language</span>
+        <select id="lang" aria-label="Commentary language"></select>
+      </label>
+      <label class="ctl">
+        <span>Voice</span>
+        <select id="speaker" aria-label="Commentator voice"></select>
+      </label>
+      <button id="crowdToggle" class="pill" aria-pressed="true" title="Toggle crowd noise">
+        <span class="dot"></span> Crowd
+      </button>
+    </div>
+  </header>
+
+  <div id="banner" class="banner" hidden></div>
+
+  <main class="grid">
+    <section class="card scoreboard" aria-label="Scoreboard">
+      <div class="score-main">
+        <div class="live"><span class="rec"></span>LIVE</div>
+        <div class="score"><span id="runs">0</span>/<span id="wkts">0</span></div>
+        <div class="overs">Overs <b id="overs">0.0</b></div>
+      </div>
+      <div class="equation" id="equation">CRR 0.00</div>
+      <div class="this-over">
+        <span class="lbl">This over</span>
+        <ol id="overBalls" class="chips" aria-live="polite"></ol>
+      </div>
+      <div class="players">
+        <label><span>🏏 On strike</span><input id="batter" maxlength="40" value="Kohli" autocomplete="off" /></label>
+        <label><span>⚾ Bowler</span><input id="bowler" maxlength="40" value="Starc" autocomplete="off" /></label>
+        <label class="target"><span>🎯 Target</span><input id="target" type="number" min="0" max="999" inputmode="numeric" placeholder="—" /></label>
+      </div>
+    </section>
+
+    <section class="card ticker" aria-label="Commentary">
+      <div class="ticker-head">
+        <span class="onair" id="onair"><i></i><i></i><i></i><i></i> ON AIR</span>
+        <span class="badge" id="langBadge">हिं</span>
+        <span class="badge ghost" id="sourceBadge">ready</span>
+      </div>
+      <p id="tickerText" class="ticker-text" lang="hi" aria-live="polite">Tap a delivery below and hear it called live.</p>
+      <div class="ticker-meta" id="tickerMeta">Pick a language, set the names, and start bowling.</div>
+    </section>
+
+    <section class="card pad" aria-label="Deliveries">
+      <div class="buttons">
+        <button class="ev" data-ev="dot">•<small>Dot</small></button>
+        <button class="ev" data-ev="single">1<small>Single</small></button>
+        <button class="ev" data-ev="two">2<small>Two</small></button>
+        <button class="ev big four" data-ev="four">4<small>FOUR</small></button>
+        <button class="ev big six" data-ev="six">6<small>SIX</small></button>
+        <button class="ev out" data-ev="bowled">W<small>Bowled</small></button>
+        <button class="ev out" data-ev="caught">W<small>Caught</small></button>
+        <button class="ev out" data-ev="lbw">W<small>LBW</small></button>
+        <button class="ev extra" data-ev="wide">Wd<small>Wide</small></button>
+        <button class="ev extra" data-ev="noball">Nb<small>No-ball</small></button>
+        <button class="ev drop" data-ev="dropped">🙈<small>Dropped</small></button>
+      </div>
+      <form id="freeForm" class="free">
+        <input id="freeText" maxlength="200" placeholder="Describe the ball… e.g. Kohli hits a six over long-on" autocomplete="off" />
+        <button type="submit" class="go">Call it</button>
+      </form>
+      <div class="script-row">
+        <button id="scriptBtn" class="script">▶ Load scripted over<small>Last over · 16 needed off 6</small></button>
+        <button id="stopBtn" class="ghost-btn" hidden>■ Stop</button>
+        <button id="resetBtn" class="ghost-btn">↺ New innings</button>
+      </div>
+    </section>
+
+    <section class="card latency" aria-label="Latency">
+      <h2>Click → first audio</h2>
+      <div class="ttfa"><span id="ttfa">—</span><small>ms</small></div>
+      <div class="split">
+        <div><span class="k llm">LLM</span><b id="llmMs">—</b><small>ms</small></div>
+        <div><span class="k tts">TTS TTFB</span><b id="ttsMs">—</b><small>ms</small></div>
+        <div><span class="k play">Decode</span><b id="playMs">—</b><small>ms</small></div>
+      </div>
+      <ol id="latHistory" class="lat-history"></ol>
+      <p class="avg" id="latAvg"></p>
+    </section>
+
+    <section class="card feed" aria-label="Commentary log">
+      <h2>Ball by ball</h2>
+      <ol id="feed"></ol>
+    </section>
+  </main>
+
+  <div class="marquee" aria-hidden="true"><div id="marquee" class="marquee-inner">GALLI COMMENTARY · LIVE ·</div></div>
+
+  <footer class="foot">Voices by Sarvam Bulbul v4 · commentary by Sarvam 105B · crowd synthesised live in your browser</footer>
+
+  <audio id="voice" preload="auto"></audio>
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>
